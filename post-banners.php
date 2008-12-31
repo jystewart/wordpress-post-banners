@@ -12,9 +12,26 @@ Author URI: http://jystewart.net/process/
 
 add_action('admin_menu', 'post_banners_add_custom_box');
 add_action('save_post', 'post_banners_process_saved_post');
+add_action('admin_menu', 'post_banners_admin_menu');
+
+function post_banners_admin_menu() {
+  add_options_page(__('Post Banners', 'post-banners'), __('Post Banners', 'post-banners'), 8, basename(__FILE__), 'post_banners_admin');
+}
+
+function post_banners_admin() {
+  $options = get_option('post_banners_options');
+  if (isset($_POST["post_banners_options_submit"])) {
+    $options = array(
+      'display_banners_in_feeds' => $_POST['display_banners_in_feeds']
+    );
+    update_option('post_banners_options', $options);
+		$message = __('Options updated.', 'post-banners');
+  }
+  include dirname(__FILE__) . '/templates/admin.tpl.php';
+}
 
 function post_banners_input() {
-  include dirname(__FILE__) . '/templates/input_fields.tpl';
+  include dirname(__FILE__) . '/templates/input_fields.tpl.php';
 }
 
 function post_banners_add_custom_box() {
