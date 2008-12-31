@@ -83,10 +83,11 @@ function post_banners_process_saved_post($post_id) {
     } else {
       // store the image details in a custom field
       global $wpdb;
-      $wpdb->query($wpdb->prepare('REPLACE INTO ' . $wpdb->postmeta . ' (`post_id`, `meta_key`, `meta_value` ) VALUES (%s, %s, %s)', 
+      $wpdb->query($wpdb->prepare('DELETE FROM ' . $wpdb->postmeta . ' WHERE `post_id` = %d AND `meta_key` IN (%s, %s)', $post_id, 'post_banner_image', 'post_banner_alt'));
+      $wpdb->query($wpdb->prepare('INSERT INTO ' . $wpdb->postmeta . ' (`post_id`, `meta_key`, `meta_value` ) VALUES (%s, %s, %s)', 
         $post_id, 'post_banner_image', $file['url']));
       if (isset($_POST['post_banner_alt'])) {
-        $wpdb->query($wpdb->prepare('REPLACE INTO ' . $wpdb->postmeta . ' (`post_id`, `meta_key`, `meta_value` ) VALUES (%s, %s, %s)', 
+        $wpdb->query($wpdb->prepare('INSERT INTO ' . $wpdb->postmeta . ' (`post_id`, `meta_key`, `meta_value` ) VALUES (%s, %s, %s)', 
           $post_id, 'post_banner_alt', htmlspecialchars($_POST['post_banner_alt'])));        
       }
     }
