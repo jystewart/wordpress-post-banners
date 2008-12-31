@@ -30,15 +30,11 @@ function post_banners_process_saved_post($post_id) {
   /* Check whether we have a file uploaded */
   if (isset($_FILES['post_banner_image'])) {
     $key = 'post_banner_image';
-    $override = array(
-      'test_form' => false
-    );
-    $file = wp_handle_upload($key, $override);
+    $override = array('test_form' => false);
+    $file = wp_handle_upload($_FILES['post_banner_image'], $override);
 
     if (isset($file['error'])) {
-      var_export($_FILES);
-      var_export($file);
-      die('here: ' . __FILE__ . ' : ' . __LINE__);
+      // handle error
     } else {
       // store the image details in a custom field
       global $wpdb;
