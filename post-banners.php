@@ -13,6 +13,34 @@ Author URI: http://jystewart.net/process/
 add_action('admin_menu', 'post_banners_add_custom_box');
 add_action('save_post', 'post_banners_process_saved_post');
 add_action('admin_menu', 'post_banners_admin_menu');
+add_filter('the_content_rss', 'post_banners_add_image_to_feed_item');
+
+function post_banners_add_image_to_feed_item($content) {
+  $options = get_option('post_banners_options');
+  if (isset($options['display_banners_in_feeds']) && $options['display_banners_in_feeds'] == 1) {
+    $image_tag = '<p>' . post_banners_image_tag_for_current_post() . '</p>';
+    echo $image_tag;    
+  }
+  return $content;
+}
+
+function post_banners_image_tag_for_current_post($width = NULL, $height = NULL) {
+  $details = post_banners_for_current_post();
+  if (! empty($details['src'])) {
+    if ($width && $height) {
+      return '<img src="' . $details['src'][0] . '" alt="' . $details['alt'][0] . '" width="' . $width . '" height="' . $height . '">';
+    } 
+    return '<img src="' . $details['src'][0] . '" alt="' . $details['alt'][0] . '">';
+  }
+  return '';
+}
+
+function post_banners_for_current_post() {
+  return array(
+    'src' => get_post_custom_values('post_banner_image'),
+    'alt' => get_post_custom_values('post_banner_alt')
+  );
+}
 
 function post_banners_admin_menu() {
   add_options_page(__('Post Banners', 'post-banners'), __('Post Banners', 'post-banners'), 8, basename(__FILE__), 'post_banners_admin');
