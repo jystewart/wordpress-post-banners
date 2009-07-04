@@ -1,6 +1,8 @@
 This plugin is a work in progress, as is this README.
 
-Please Note: At the moment this plugin will only work if you hack wordpress to add 'enctype="multipart/form-data"' to your post form. I am looking for alternative approaches and would welcome suggestions.
+Please Note: At the moment this plugin will only work if you hack wordpress to add 'enctype="multipart/form-data"' to your post form. I am looking for alternative approaches and would welcome suggestions. If you're happy to restrict usage to those with javascript enabled, you could try Victor Chang's approach of setting the attribute with javascript:
+
+<script type="text/javascript">jQuery('form#post').attr('enctype','multipart/form-data').attr('encoding','multipart/form-data')</script>
 
 A few times lately I've had designers come to me with theme suggestions that require a banner image for each post that sits outside of the flow of post content. I'm sure there are ways round that with careful styling, or templates for the content area, but that all felt a bit clunky. There are options like the Custom Field Images [1] plugin, but that doesn't allow the user to upload the image in the post form, so that didn't work for me.
 
